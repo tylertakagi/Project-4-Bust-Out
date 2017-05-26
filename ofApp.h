@@ -13,7 +13,7 @@ class ofApp : public ofBaseApp{
 
         Paddle* paddle;
         Ball* ball;
-
+    
         void setup();
 		void update();
 		void draw();
@@ -23,6 +23,7 @@ class ofApp : public ofBaseApp{
         void drawGameOverScreen();
         void gameLogic();
     
+        ofTrueTypeFont arcade;
         ofImage logo;
 
 		void keyPressed(int key);

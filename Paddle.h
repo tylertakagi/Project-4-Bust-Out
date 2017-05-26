@@ -1,3 +1,4 @@
+
 #pragma once
 #include "ofMain.h"
 
@@ -10,11 +11,10 @@ public:
     float y;
     int w;
     int h;
-    float v;
     ofColor color;
     
     Paddle();
-    Paddle(float x, float y, int w, int h, float v, ofColor color);
+    Paddle(float x, float y, int w, int h, ofColor color);
     
     void draw();
     void move();

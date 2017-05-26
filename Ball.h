@@ -7,10 +7,12 @@ public:
 
     ofVec2f location, velocity, acceleration;
     int r;
+    int score;
+    int lives;
     ofColor color;
     
     Ball();
-    Ball(int r, ofColor color);
+    Ball(int r, int score, int lives, ofColor color);
     
     void draw();
     void move();
