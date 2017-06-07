@@ -6,10 +6,11 @@
 #include "ofMain.h"
 #include "Paddle.h"
 #include "Ball.h"
+#include "Block.h"
+#include "Brick.h"
 
 class ofApp : public ofBaseApp{
-
-	public:
+public:
 
         Paddle* paddle;
         Ball* ball;
@@ -18,8 +19,12 @@ class ofApp : public ofBaseApp{
 		void update();
 		void draw();
     
+        void prepareBricks();
+        void ballCollision();
+        void levelClear();
         void drawStartScreen();
         void drawGameScreen();
+        void drawWinScreen();
         void drawGameOverScreen();
         void gameLogic();
     
