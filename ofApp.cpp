@@ -26,8 +26,27 @@ int bricksLeft = bricks.size();
 
 void ofApp::setup() {
     ofSetBackgroundColor(50, 50, 50);
+    
     logo.load("logo.png");
+    gameOverLogo.load("gameOver.png");
+    gameWinLogo.load("gameWin.png");
     arcade.load("arcade.ttf", 15);
+    hitsPaddle.load("paddleNoise.mp3");
+    hitsRed.load("hitsRed.mp3");
+    hitsGreen.load("hitsGreen.mp3");
+    hitsBlue.load("hitsBlue.mp3");
+    hitsYellow.load("hitsYellow.mp3");
+    hitsPink.load("hitsPink.mp3");
+    hitsSpecial.load("hitsSpecial.mp3");
+    loseLife.load("loseLife.mp3");
+    gameOver.load("gameOver.mp3");
+    roundOne.load("roundOne.mp3");
+    roundTwo.load("roundTwo.mp3");
+    roundThree.load("roundThree.mp3");
+    roundFour.load("roundFour.mp3");
+    themeSong.load("AphexTwin.mp3");
+    themeSong.play();
+    
     paddle = new Paddle((ofGetWidth() / 2), (ofGetHeight() / 2 + PADDLE_OFFSET), 20, ofColor(0,255,0));
     ball = new Ball(20, ofColor(0, 255, 0));
     ball->velocity.set(1, 5);
@@ -80,15 +99,30 @@ void ofApp::drawGameScreen() {
     for (int i = 0; i < bricks.size(); ++i) {
         if (!bricks.at(i)->destroyed && ball->hits(bricks.at(i))) {
             bricks.at(i)->destroy();
+            if (bricks.at(i)->type == 1) {
+                hitsRed.play();
+            } else if (bricks.at(i)->type == 2) {
+                hitsGreen.play();
+            } else if (bricks.at(i)->type == 3) {
+                hitsBlue.play();
+            } else if (bricks.at(i)->type == 4) {
+                hitsSpecial.play();
+                paddle->setSize(-10);
+            } else if (bricks.at(i)->type == 5) {
+                hitsYellow.play();
+            } else if (bricks.at(i)->type == 6) {
+                hitsPink.play();
+            }
             ball->bounce();
             ++bricksLeft;
             score += bricks[i]->points;
             break;
         }
     }
-    
+
     if ((ball->location.y) > (paddle->y)) {
         ball->location.set((ofGetWidth()/2), (ofGetHeight()/2));
+        loseLife.play();
         --lives;
     }
     
@@ -100,22 +134,23 @@ void ofApp::drawGameScreen() {
     
     if (lives == 0) {
         gameState = GAME_OVER_SCREEN;
+        themeSong.stop();
+        gameOver.play();
     }
     
-    if (bricks.size() == bricksLeft || level > 4) {
+    if (bricks.size() == bricksLeft && level > 4) {
         gameState = WIN_SCREEN;
     }
 }
 
 void ofApp::drawWinScreen() {
-    ofSetColor(255, 255, 0);
-    arcade.drawString("YOU WIN!", (ofGetWidth()/2), (ofGetHeight()/2));
+    gameOverLogo.draw((ofGetWidth()/2) - 178.5, (ofGetHeight()/2));
 }
 
 void ofApp::drawGameOverScreen() {
-    arcade.drawString("GAME OVER", (ofGetWidth()/2 - 150), (ofGetHeight()/2) - 30);
-    arcade.drawString("YOUR SCORE IS: ", (ofGetWidth()/2 - 150), (ofGetHeight()/2));
-    arcade.drawString(ofToString(score),(ofGetWidth()/2) + 110, (ofGetHeight()/2));
+    gameOverLogo.draw((ofGetWidth()/2) - 348, (ofGetHeight()/2) - LOGO_Y);
+    arcade.drawString("YOUR SCORE IS: ", (ofGetWidth()/2 - 150), (ofGetHeight()/2) - 75);
+    arcade.drawString(ofToString(score),(ofGetWidth()/2) + 75, (ofGetHeight()/2) - 75);
 }
 
 void ofApp::gameLogic() {
@@ -129,6 +164,7 @@ void ofApp::gameLogic() {
             if ((ball->location.x + ball->r) >= (paddle->x)) {
                 ball->velocity.y *= -1;
                 ball->velocity.rotate(ofRandom(-20, 20));
+                hitsPaddle.play();
             }
         }
     }
@@ -156,8 +192,13 @@ void ofApp::prepareBricks() {
 
 void ofApp::keyPressed(int key){
     if (gameState == START_SCREEN) {
-        if (key >= '1' && key <= '5') {
+        if (key >= '1' && key <= '4') {
             level = key - 48;
+            
+            if (level == 1) roundOne.play();
+            if (level == 2) roundTwo.play();
+            if (level == 3) roundThree.play();
+            if (level == 4) roundFour.play();
         }
         score = 0;
         lives = 3;
@@ -165,6 +206,12 @@ void ofApp::keyPressed(int key){
         paddle->setSize(level);
         gameState = GAME_SCREEN;
         }
+    
+    if (gameState == GAME_OVER_SCREEN || gameState == WIN_SCREEN) {
+        if (key == 'f') {
+            gameState = START_SCREEN;
+        }
+    }
 }
 
 //--------------------------------------------------------------

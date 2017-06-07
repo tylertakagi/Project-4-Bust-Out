@@ -30,7 +30,23 @@ public:
     
         ofTrueTypeFont arcade;
         ofImage logo;
-
+        ofImage gameOverLogo;
+        ofImage gameWinLogo;
+        ofSoundPlayer hitsPaddle;
+        ofSoundPlayer hitsRed;
+        ofSoundPlayer hitsGreen;
+        ofSoundPlayer hitsBlue;
+        ofSoundPlayer hitsSpecial;
+        ofSoundPlayer hitsYellow;
+        ofSoundPlayer hitsPink;
+        ofSoundPlayer loseLife;
+        ofSoundPlayer gameOver;
+        ofSoundPlayer roundOne;
+        ofSoundPlayer roundTwo;
+        ofSoundPlayer roundThree;
+        ofSoundPlayer roundFour;
+        ofSoundPlayer themeSong;
+    
 		void keyPressed(int key);
 		void keyReleased(int key);
 		void mouseMoved(int x, int y );

@@ -32,12 +32,16 @@ void Ball::bounceHorizontally() {
         location.x = ofGetWidth() - r;
     } else if (location.x <= 0) {
         location.x = r;
+    } else if (location.y >= ofGetWindowHeight() - r) {
+        location.y = ofGetWindowHeight() - r;
+        velocity.y *= -1;
     }
 }
 
 void Ball::bounce() {
     velocity.rotate(ofRandom(-45, 45));
-    velocity *= -1;
+    velocity.x *= -1;
+    velocity.y *= -1;
 }
 
 bool Ball::hits(Brick* b) {
@@ -45,4 +49,5 @@ bool Ball::hits(Brick* b) {
         return true;
     }
 }
+
 
